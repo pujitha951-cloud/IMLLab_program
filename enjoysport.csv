@@ -1,0 +1,41 @@
+import csv
+
+def finds_algorithm(data):
+    # Initialize hypothesis with '0'
+    hypothesis = ['0'] * (len(data[0]) - 1)
+
+    for example in data:
+        attributes = example[:-1]
+        label = example[-1].strip().lower()
+
+        # Only consider positive examples
+        if label == 'yes':
+            for i in range(len(hypothesis)):
+                if hypothesis[i] == '0':
+                    hypothesis[i] = attributes[i]
+                elif hypothesis[i] != attributes[i]:
+                    hypothesis[i] = '?'
+    return hypothesis
+
+
+def load_csv(filename):
+    """Load dataset from a CSV file, skipping the header."""
+    with open(filename, 'r') as file:
+        reader = csv.reader(file)
+        data = list(reader)
+
+    # Remove header row
+    return data[1:]
+
+
+# 🔹 Usage
+filename = "enjoyy.csv"   # replace with your CSV file name
+dataset = load_csv(filename)
+
+final_hypothesis = finds_algorithm(dataset)
+
+print("Training Data:")
+for row in dataset:
+    print(row)
+
+print("\nFinal Hypothesis:", final_hypothesis)
